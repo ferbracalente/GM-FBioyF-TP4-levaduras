@@ -1,0 +1,1601 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TP Nº 4: Genética de Levaduras (Saccharomyces cerevisiae) - Laboratorio Interactivo</title>
+  <style>
+    :root {
+      --bg-dark: #0f172a;
+      --bg-card: #1e293b;
+      --bg-card-hover: #26354d;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent-amber: #f59e0b;
+      --accent-teal: #14b8a6;
+      --accent-blue: #3b82f6;
+      --accent-purple: #a855f7;
+      --accent-rose: #f43f5e;
+      --accent-green: #22c55e;
+      --border: #334155;
+      --radius: 14px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      line-height: 1.6;
+      padding-bottom: 60px;
+    }
+
+    /* Header */
+    header {
+      background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 55%, #064e3b 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 28px 24px;
+      text-align: center;
+      position: relative;
+    }
+
+    .badge-top {
+      display: inline-block;
+      background: rgba(245, 158, 11, 0.18);
+      color: #fbbf24;
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 4px 14px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+    }
+
+    header h1 {
+      font-size: clamp(1.5rem, 3vw, 2.3rem);
+      font-weight: 800;
+      margin-bottom: 8px;
+      color: #ffffff;
+    }
+
+    header p {
+      color: var(--text-muted);
+      max-width: 780px;
+      margin: 0 auto;
+      font-size: 0.98rem;
+    }
+
+    /* Navigation Tabs */
+    .nav-tabs {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 16px 20px;
+      background: rgba(15, 23, 42, 0.92);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .tab-btn {
+      background: var(--bg-card);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      padding: 10px 18px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.92rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn:hover {
+      background: var(--bg-card-hover);
+      color: var(--text-main);
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--accent-amber), #d97706);
+      color: #0f172a;
+      border-color: var(--accent-amber);
+      box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+    }
+
+    /* Main Container */
+    .container {
+      max-width: 1240px;
+      margin: 28px auto;
+      padding: 0 20px;
+    }
+
+    .tab-section {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .tab-section.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Cards & Grids */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 24px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+    }
+
+    .card h2 {
+      font-size: 1.28rem;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #fff;
+    }
+
+    .card h3 {
+      font-size: 1.08rem;
+      margin-bottom: 8px;
+      color: #fbbf24;
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 99px;
+      font-size: 0.76rem;
+      font-weight: 700;
+      margin-right: 6px;
+    }
+
+    .pill-1n { background: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.4); }
+    .pill-2n { background: rgba(168, 85, 247, 0.2); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.4); }
+    .pill-meiosis { background: rgba(20, 184, 166, 0.2); color: #2dd4bf; border: 1px solid rgba(20, 184, 166, 0.4); }
+    .pill-warn { background: rgba(244, 63, 94, 0.2); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.4); }
+
+    /* Life Cycle Interactive Layout */
+    .lifecycle-layout {
+      display: grid;
+      grid-template-columns: 1.25fr 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    @media (max-width: 960px) {
+      .lifecycle-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .svg-stage-node {
+      cursor: pointer;
+      transition: transform 0.2s ease, filter 0.2s ease;
+    }
+
+    .svg-stage-node:hover {
+      filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.7));
+    }
+
+    .svg-stage-node.selected rect,
+    .svg-stage-node.selected circle.node-ring {
+      stroke: #f59e0b !important;
+      stroke-width: 3.5px !important;
+    }
+
+    /* Microscope Simulator */
+    .microscope-layout {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    @media (max-width: 960px) {
+      .microscope-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .stage-selector-btn {
+      width: 100%;
+      text-align: left;
+      background: rgba(15, 23, 42, 0.65);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      padding: 12px 14px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .stage-selector-btn:hover {
+      border-color: var(--accent-amber);
+      background: rgba(245, 158, 11, 0.08);
+    }
+
+    .stage-selector-btn.active {
+      border-color: var(--accent-amber);
+      background: rgba(245, 158, 11, 0.16);
+      box-shadow: inset 4px 0 0 var(--accent-amber);
+    }
+
+    .viewport-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .microscope-ocular {
+      width: 400px;
+      height: 400px;
+      max-width: 90vw;
+      max-height: 90vw;
+      border-radius: 50%;
+      border: 14px solid #090d16;
+      box-shadow:
+        0 0 0 4px #334155,
+        inset 0 0 45px rgba(0, 0, 0, 0.85),
+        0 18px 40px rgba(0, 0, 0, 0.6);
+      position: relative;
+      overflow: hidden;
+      background: #d6d9ce;
+    }
+
+    #microscopeCanvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .ocular-overlay {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      border-radius: 50%;
+      box-shadow: inset 0 0 55px rgba(0, 0, 0, 0.72);
+    }
+
+    .scale-bar {
+      position: absolute;
+      bottom: 28px;
+      right: 65px;
+      background: rgba(15, 23, 42, 0.75);
+      color: #fff;
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      pointer-events: none;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .microscope-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      justify-content: center;
+      align-items: center;
+      background: rgba(15, 23, 42, 0.7);
+      padding: 14px 18px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      width: 100%;
+    }
+
+    .control-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.86rem;
+    }
+
+    .btn-small {
+      background: #334155;
+      color: #f8fafc;
+      border: 1px solid #475569;
+      padding: 6px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+
+    .btn-small.active {
+      background: var(--accent-teal);
+      color: #0f172a;
+      border-color: var(--accent-teal);
+    }
+
+    /* Custom Photo Upload Box */
+    .user-photo-box {
+      margin-top: 16px;
+      border: 1px dashed #475569;
+      border-radius: 12px;
+      padding: 14px;
+      text-align: center;
+      background: rgba(15, 23, 42, 0.45);
+    }
+
+    .user-photo-preview {
+      max-width: 100%;
+      max-height: 260px;
+      border-radius: 10px;
+      margin-top: 10px;
+      display: none;
+      border: 2px solid var(--accent-amber);
+    }
+
+    /* Protocol Interactive Step-by-Step */
+    .day-switcher {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .day-btn {
+      flex: 1;
+      padding: 14px;
+      border-radius: 12px;
+      background: var(--bg-card);
+      border: 2px solid var(--border);
+      color: var(--text-main);
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .day-btn.active {
+      border-color: var(--accent-teal);
+      background: rgba(20, 184, 166, 0.14);
+      color: #5eead4;
+    }
+
+    .protocol-step {
+      background: rgba(15, 23, 42, 0.65);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--accent-blue);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 14px;
+      transition: all 0.2s;
+    }
+
+    .protocol-step.completed {
+      border-left-color: var(--accent-green);
+      background: rgba(34, 197, 94, 0.07);
+    }
+
+    .step-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      cursor: pointer;
+    }
+
+    .step-title {
+      font-weight: 700;
+      font-size: 1rem;
+      color: #f8fafc;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .step-badges {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .badge-tech {
+      background: rgba(255, 255, 255, 0.08);
+      color: #cbd5e1;
+      padding: 2px 9px;
+      border-radius: 6px;
+      font-size: 0.76rem;
+      font-weight: 600;
+    }
+
+    .why-box {
+      margin-top: 10px;
+      padding: 10px 14px;
+      background: rgba(245, 158, 11, 0.1);
+      border-left: 3px solid var(--accent-amber);
+      border-radius: 6px;
+      font-size: 0.88rem;
+      color: #fde68a;
+    }
+
+    .question-box {
+      margin-top: 12px;
+      background: rgba(168, 85, 247, 0.12);
+      border: 1px solid rgba(168, 85, 247, 0.4);
+      border-radius: 8px;
+      padding: 12px 14px;
+    }
+
+    .question-box summary {
+      cursor: pointer;
+      font-weight: 700;
+      color: #d8b4fe;
+      font-size: 0.92rem;
+    }
+
+    /* Petri Dish Simulator */
+    .petri-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      justify-content: center;
+      margin-top: 16px;
+    }
+
+    .petri-card {
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      width: 280px;
+      text-align: center;
+    }
+
+    table.media-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+      font-size: 0.92rem;
+    }
+
+    table.media-table th,
+    table.media-table td {
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      text-align: left;
+    }
+
+    table.media-table th {
+      background: rgba(15, 23, 42, 0.8);
+      color: #fbbf24;
+    }
+
+    .progress-bar-wrap {
+      background: #0f172a;
+      border-radius: 99px;
+      height: 10px;
+      overflow: hidden;
+      margin: 10px 0 20px;
+      border: 1px solid var(--border);
+    }
+
+    .progress-bar-fill {
+      background: linear-gradient(90deg, var(--accent-teal), var(--accent-green));
+      height: 100%;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <span class="badge-top">Genética Microbiana • Trabajo Práctico Nº 4</span>
+    <h1>Genética de Levaduras: <em>Saccharomyces cerevisiae</em></h1>
+    <p>Plataforma interactiva de laboratorio: Ciclo de vida, microscopía óptica de cada estadio, vía de lipoilación de proteínas (<em>LIP2</em> / <em>LIP3</em>) y protocolo experimental paso a paso.</p>
+  </header>
+
+  <nav class="nav-tabs">
+    <button class="tab-btn active" onclick="switchTab('ciclo')">🔄 1. Ciclo de Vida Interactivo</button>
+    <button class="tab-btn" onclick="switchTab('microscopio')">🔬 2. Microscopio Óptico Virtual</button>
+    <button class="tab-btn" onclick="switchTab('protocolo')">🧪 3. Protocolo Paso a Paso (Día 1 y 2)</button>
+    <button class="tab-btn" onclick="switchTab('lipoilacion')">🧬 4. Vía de Lipoilación y Medios</button>
+  </nav>
+
+  <main class="container">
+
+    <!-- ==========================================
+         SECCIÓN 1: CICLO DE VIDA INTERACTIVO
+         ========================================== -->
+    <section id="tab-ciclo" class="tab-section active">
+      <div class="lifecycle-layout">
+        <!-- Diagrama SVG Interactivo -->
+        <div class="card">
+          <h2>🔄 Ciclo de Vida de <em>Saccharomyces cerevisiae</em></h2>
+          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 14px;">
+            Haz clic en cualquier etapa del diagrama para explorar qué ocurre a nivel celular, genético y cómo se relaciona con el protocolo del TP 4.
+          </p>
+
+          <svg viewBox="0 0 680 500" width="100%" style="background: #0b1120; border-radius: 12px; border: 1px solid #1e293b;">
+            <defs>
+              <marker id="arrowBlue" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                <path d="M0,0 L0,6 L8,3 z" fill="#60a5fa" />
+              </marker>
+              <marker id="arrowPurple" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                <path d="M0,0 L0,6 L8,3 z" fill="#c084fc" />
+              </marker>
+              <marker id="arrowTeal" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                <path d="M0,0 L0,6 L8,3 z" fill="#2dd4bf" />
+              </marker>
+              <marker id="arrowAmber" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                <path d="M0,0 L0,6 L8,3 z" fill="#fbbf24" />
+              </marker>
+            </defs>
+
+            <!-- Fondo divisorio Haploide / Diploide -->
+            <rect x="12" y="12" width="320" height="476" rx="12" fill="rgba(59, 130, 246, 0.05)" stroke="rgba(59, 130, 246, 0.25)" stroke-dasharray="6 4"/>
+            <text x="28" y="38" fill="#60a5fa" font-size="13" font-weight="bold">FASE HAPLOIDE ESTABLE (1n = 16 cromosomas)</text>
+
+            <rect x="348" y="12" width="320" height="476" rx="12" fill="rgba(168, 85, 247, 0.05)" stroke="rgba(168, 85, 247, 0.25)" stroke-dasharray="6 4"/>
+            <text x="364" y="38" fill="#c084fc" font-size="13" font-weight="bold">FASE DIPLOIDE ESTABLE (2n = 32 cromosomas)</text>
+
+            <!-- Flechas de conexión -->
+            <!-- Mitosis 1n loop -->
+            <path d="M 85 110 C 35 80, 35 165, 85 145" fill="none" stroke="#60a5fa" stroke-width="2.2" marker-end="url(#arrowBlue)"/>
+            <text x="22" y="75" fill="#93c5fd" font-size="11">Mitosis (gemación)</text>
+
+            <!-- Haploides -> Apareamiento -->
+            <path d="M 175 155 L 235 215" fill="none" stroke="#fbbf24" stroke-width="2.5" marker-end="url(#arrowAmber)"/>
+            <!-- Apareamiento -> Cigoto -->
+            <path d="M 335 250 L 415 200" fill="none" stroke="#fbbf24" stroke-width="2.5" marker-end="url(#arrowAmber)"/>
+            <!-- Cigoto -> Diploide 2n -->
+            <path d="M 505 160 L 535 125" fill="none" stroke="#c084fc" stroke-width="2.5" marker-end="url(#arrowPurple)"/>
+            <!-- Mitosis 2n loop -->
+            <path d="M 615 95 C 660 65, 660 150, 615 125" fill="none" stroke="#c084fc" stroke-width="2.2" marker-end="url(#arrowPurple)"/>
+            <text x="565" y="64" fill="#d8b4fe" font-size="11">Mitosis (gemación)</text>
+
+            <!-- Diploide -> Meiosis / Asca -->
+            <path d="M 565 150 L 535 330" fill="none" stroke="#2dd4bf" stroke-width="2.5" marker-end="url(#arrowTeal)"/>
+            <text x="550" y="250" fill="#5eead4" font-size="11" font-weight="bold">Meiosis</text>
+            <text x="550" y="265" fill="#94a3b8" font-size="10">(Ayuno N / KAc 1%)</text>
+
+            <!-- Asca -> Germinación -->
+            <path d="M 435 390 L 245 390" fill="none" stroke="#2dd4bf" stroke-width="2.5" marker-end="url(#arrowTeal)"/>
+            <!-- Germinación -> Haploides -->
+            <path d="M 165 345 L 140 175" fill="none" stroke="#60a5fa" stroke-width="2.5" marker-end="url(#arrowBlue)"/>
+
+            <!-- NODO 1: Células Haploides MATa y MATα -->
+            <g class="svg-stage-node selected" id="node-haploid" onclick="selectLifecycleStage('haploid')">
+              <rect x="85" y="85" width="135" height="75" rx="12" fill="#1e293b" stroke="#60a5fa" stroke-width="2"/>
+              <!-- Célula a -->
+              <circle cx="122" cy="118" r="15" fill="#3b82f6" stroke="#bfdbfe" stroke-width="2"/>
+              <circle cx="135" cy="106" r="7" fill="#3b82f6" stroke="#bfdbfe" stroke-width="1.5"/>
+              <text x="118" y="123" fill="#fff" font-size="12" font-weight="bold">a</text>
+              <!-- Célula alpha -->
+              <circle cx="178" cy="118" r="15" fill="#ec4899" stroke="#fbcfe8" stroke-width="2"/>
+              <circle cx="191" cy="106" r="7" fill="#ec4899" stroke="#fbcfe8" stroke-width="1.5"/>
+              <text x="173" y="123" fill="#fff" font-size="12" font-weight="bold">α</text>
+              <text x="102" y="152" fill="#e2e8f0" font-size="11" font-weight="bold">Haploides (1n)</text>
+            </g>
+
+            <!-- NODO 2: Señalización por Feromonas y Fusión Celular -->
+            <g class="svg-stage-node" id="node-mating" onclick="selectLifecycleStage('mating')">
+              <rect x="210" y="215" width="145" height="75" rx="12" fill="#1e293b" stroke="#fbbf24" stroke-width="2"/>
+              <path d="M 245 248 C 258 235, 272 242, 282 248 C 272 254, 258 261, 245 248 Z" fill="#3b82f6" stroke="#bfdbfe" stroke-width="1.5"/>
+              <path d="M 320 248 C 307 235, 293 242, 283 248 C 293 254, 307 261, 320 248 Z" fill="#ec4899" stroke="#fbcfe8" stroke-width="1.5"/>
+              <text x="225" y="280" fill="#fde68a" font-size="11" font-weight="bold">Apareamiento (a × α)</text>
+            </g>
+
+            <!-- NODO 3: Cigoto (Fusión nuclear / Cariogamia) -->
+            <g class="svg-stage-node" id="node-zygote" onclick="selectLifecycleStage('zygote')">
+              <rect x="395" y="155" width="135" height="75" rx="12" fill="#1e293b" stroke="#fbbf24" stroke-width="2"/>
+              <!-- Forma de maní con yema -->
+              <path d="M 432 188 C 432 174, 452 174, 460 183 C 468 174, 488 174, 488 188 C 488 202, 468 202, 460 193 C 452 202, 432 202, 432 188 Z" fill="#8b5cf6" stroke="#ddd6fe" stroke-width="2"/>
+              <circle cx="460" cy="172" r="7" fill="#a855f7" stroke="#ddd6fe" stroke-width="1.5"/>
+              <text x="415" y="220" fill="#fde68a" font-size="11" font-weight="bold">Cigoto Diploide</text>
+            </g>
+
+            <!-- NODO 4: Célula Diploide (2n) -->
+            <g class="svg-stage-node" id="node-diploid" onclick="selectLifecycleStage('diploid')">
+              <rect x="495" y="75" width="130" height="72" rx="12" fill="#1e293b" stroke="#c084fc" stroke-width="2"/>
+              <ellipse cx="552" cy="104" rx="20" ry="15" fill="#9333ea" stroke="#e9d5ff" stroke-width="2"/>
+              <ellipse cx="578" cy="104" rx="9" ry="7" fill="#a855f7" stroke="#e9d5ff" stroke-width="1.5"/>
+              <text x="537" y="108" fill="#fff" font-size="10" font-weight="bold">a/α</text>
+              <text x="518" y="138" fill="#e9d5ff" font-size="11" font-weight="bold">Diploide (2n)</text>
+            </g>
+
+            <!-- NODO 5: Asca con 4 Ascosporas (Tétrada) -->
+            <g class="svg-stage-node" id="node-ascus" onclick="selectLifecycleStage('ascus')">
+              <rect x="435" y="335" width="165" height="98" rx="12" fill="#1e293b" stroke="#2dd4bf" stroke-width="2"/>
+              <circle cx="517" cy="374" r="26" fill="rgba(20, 184, 166, 0.15)" stroke="#5eead4" stroke-width="2" stroke-dasharray="3 2"/>
+              <circle cx="508" cy="365" r="9" fill="#3b82f6" stroke="#bfdbfe" stroke-width="1.5"/>
+              <circle cx="526" cy="365" r="9" fill="#ec4899" stroke="#fbcfe8" stroke-width="1.5"/>
+              <circle cx="508" cy="383" r="9" fill="#ec4899" stroke="#fbcfe8" stroke-width="1.5"/>
+              <circle cx="526" cy="383" r="9" fill="#3b82f6" stroke="#bfdbfe" stroke-width="1.5"/>
+              <text x="453" y="422" fill="#5eead4" font-size="11" font-weight="bold">Asca (4 Ascosporas 1n)</text>
+            </g>
+
+            <!-- NODO 6: Germinación / Purificación de Esporas -->
+            <g class="svg-stage-node" id="node-germination" onclick="selectLifecycleStage('germination')">
+              <rect x="105" y="345" width="145" height="82" rx="12" fill="#1e293b" stroke="#2dd4bf" stroke-width="2"/>
+              <circle cx="145" cy="378" r="9" fill="#3b82f6" stroke="#bfdbfe" stroke-width="1.5"/>
+              <circle cx="175" cy="372" r="9" fill="#ec4899" stroke="#fbcfe8" stroke-width="1.5"/>
+              <circle cx="203" cy="380" r="9" fill="#22c55e" stroke="#bbf7d0" stroke-width="1.5"/>
+              <text x="122" y="416" fill="#5eead4" font-size="11" font-weight="bold">Germinación (1n)</text>
+            </g>
+          </svg>
+        </div>
+
+        <!-- Panel dinámico de explicación de la etapa seleccionada -->
+        <div class="card" id="lifecycle-detail-panel">
+          <!-- Se completa por JS -->
+        </div>
+      </div>
+
+      <!-- Comparativa Masivo vs Tétradas -->
+      <div class="card" style="margin-top: 24px;">
+        <h2>⚖️ Dos estrategias para analizar los productos de meiosis en <em>S. cerevisiae</em></h2>
+        <div class="grid-2" style="margin-top: 14px;">
+          <div style="background: rgba(20, 184, 166, 0.08); border: 1px solid rgba(20, 184, 166, 0.35); padding: 16px; border-radius: 10px;">
+            <h3>1. Análisis Masivo de Esporas (Realizado en el TP 4)</h3>
+            <p style="font-size: 0.92rem; color: #e2e8f0;">
+              Se digiere enzimáticamente la pared de millones de ascas simultáneamente (con <strong>Liticasa</strong> y <strong>β-mercaptoetanol</strong>) y se separan mecánicamente las esporas con <strong>Tween 80 y bolitas de vidrio en vórtex</strong>. Es especialmente útil para <strong>seleccionar varios caracteres simultáneamente</strong> (como rescatar esporas haploides recombinantes <em>LIP2⁺ LIP3⁺</em> sembrando en medio selectivo YPG) o realizar ensayos de complementación.
+            </p>
+          </div>
+          <div style="background: rgba(59, 130, 246, 0.08); border: 1px solid rgba(59, 130, 246, 0.35); padding: 16px; border-radius: 10px;">
+            <h3>2. Disección de Tétradas con Micromanipulador</h3>
+            <p style="font-size: 0.92rem; color: #e2e8f0;">
+              Tras digerir el saco del asca, se utiliza una microaguja controlada por un <strong>micromanipulador</strong> para separar individualmente las 4 ascosporas de una misma tétrada sobre agar. Permite analizar la segregación 2:2 de un evento meiótico único, calcular frecuencias de recombinación, mapear genes respecto a su centrómero y estudiar conversión génica.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SECCIÓN 2: MICROSCOPIO ÓPTICO VIRTUAL
+         ========================================== -->
+    <section id="tab-microscopio" class="tab-section">
+      <div class="microscope-layout">
+        <!-- Selector de preparados -->
+        <div class="card">
+          <h2>🔬 Preparados al Microscopio</h2>
+          <p style="font-size: 0.86rem; color: var(--text-muted); margin-bottom: 14px;">
+            Selecciona el estadio del ciclo de vida o paso del protocolo para observarlo al microscopio óptico:
+          </p>
+
+          <button class="stage-selector-btn active" onclick="setMicroscopeStage('haploid', this)">
+            <div><span class="pill pill-1n">1n</span> <strong>1. Células Haploides (MATa / MATα)</strong></div>
+            <span style="font-size: 0.8rem; color: var(--text-muted);">Esferoides (~4 µm), gemación axial y racimos</span>
+          </button>
+
+          <button class="stage-selector-btn" onclick="setMicroscopeStage('zygote', this)">
+            <div><span class="pill pill-2n">Día 2</span> <strong>2. Apareamiento y Cigotos</strong></div>
+            <span style="font-size: 0.8rem; color: var(--text-muted);">Proyecciones ("shmoo") y cuello cigótico grueso</span>
+          </button>
+
+          <button class="stage-selector-btn" onclick="setMicroscopeStage('diploid', this)">
+            <div><span class="pill pill-2n">2n</span> <strong>3. Células Diploides Vegetativas</strong></div>
+            <span style="font-size: 0.8rem; color: var(--text-muted);">Elipsoides (5×6 µm), gemación bipolar</span>
+          </button>
+
+          <button class="stage-selector-btn" onclick="setMicroscopeStage('ascus', this)">
+            <div><span class="pill pill-meiosis">Meiosis</span> <strong>4. Cultivo Esporulado (Ascas / Tétradas)</strong></div>
+            <span style="font-size: 0.8rem; color: var(--text-muted);">Sacos (ascas) con 4 ascosporas haploides</span>
+          </button>
+
+          <button class="stage-selector-btn" onclick="setMicroscopeStage('spores', this)">
+            <div><span class="pill pill-warn">Día 1</span> <strong>5. Esporas Disgregadas (Post-Liticasa + Vórtex)</strong></div>
+            <span style="font-size: 0.8rem; color: var(--text-muted);">Monitoreo de 3 µl: esporas libres sin ascas</span>
+          </button>
+
+          <!-- Subir foto propia del TP -->
+          <div class="user-photo-box">
+            <strong style="font-size: 0.88rem; color: #fbbf24;">📸 ¿Tienes fotos de tu comisión?</strong>
+            <p style="font-size: 0.78rem; color: var(--text-muted); margin: 4px 0 10px;">
+              Sube una foto tomada con el celular en el microscopio para compararla con este estadio:
+            </p>
+            <input type="file" id="photoUploadInput" accept="image/*" style="font-size: 0.78rem; max-width: 100%;" onchange="handleUserPhoto(event)" />
+            <img id="userPhotoPreview" class="user-photo-preview" alt="Foto subida del microscopio" />
+          </div>
+        </div>
+
+        <!-- Ocular y descripción microscópica -->
+        <div class="card">
+          <div class="viewport-wrapper">
+            <div class="microscope-ocular">
+              <canvas id="microscopeCanvas" width="500" height="500"></canvas>
+              <div class="ocular-overlay"></div>
+              <div class="scale-bar" id="scaleBarLabel">10 µm</div>
+            </div>
+
+            <!-- Controles del microscopio -->
+            <div class="microscope-controls">
+              <div class="control-group">
+                <span><strong>Objetivo:</strong></span>
+                <button class="btn-small" id="btn40x" onclick="setMagnification(40)">40× (400×)</button>
+                <button class="btn-small active" id="btn100x" onclick="setMagnification(100)">100× Inmersión (1000×)</button>
+              </div>
+
+              <div class="control-group">
+                <span><strong>Óptica:</strong></span>
+                <button class="btn-small active" id="btnBright" onclick="setOpticsMode('brightfield')">Campo Claro</button>
+                <button class="btn-small" id="btnPhase" onclick="setOpticsMode('phase')">Contraste / DIC</button>
+              </div>
+
+              <div class="control-group">
+                <label for="focusSlider"><strong>Micrométrico (Foco):</strong></label>
+                <input type="range" id="focusSlider" min="-10" max="10" value="0" oninput="updateFocus(this.value)" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Ficha diagnóstica del preparado actual -->
+          <div id="microscope-stage-info" style="margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--border);">
+            <!-- Completado por JS -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SECCIÓN 3: PROTOCOLO INTERACTIVO (DÍA 1 Y 2)
+         ========================================== -->
+    <section id="tab-protocolo" class="tab-section">
+      <div class="card">
+        <h2>🧪 Protocolo Interactivo del Trabajo Práctico Nº 4</h2>
+        <p style="color: var(--text-muted); font-size: 0.92rem;">
+          Marca cada paso a medida que avanzas en la mesada. Haz clic en las preguntas de la guía para desplegar la respuesta experimental.
+        </p>
+
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-fill" id="protocolProgressBar"></div>
+        </div>
+
+        <div class="day-switcher">
+          <button class="day-btn active" id="btnDay1" onclick="showProtocolDay(1)">📅 DÍA 1: Obtención de Diploides, Inicio de Esporulación y Purificación de Esporas</button>
+          <button class="day-btn" id="btnDay2" onclick="showProtocolDay(2)">📅 DÍA 2: Observación de Cigotos, Inducción en YPAc/KAc y Recuento de Recombinantes</button>
+        </div>
+
+        <!-- DÍA 1 -->
+        <div id="protocol-day-1">
+          <h3 style="margin: 18px 0 10px; color: #60a5fa;">A) Obtención de células diploides (Cruzamiento / <em>Mating</em>)</h3>
+
+          <div class="protocol-step" onclick="toggleStepComplete(this)">
+            <div class="step-header">
+              <div class="step-title"><input type="checkbox" /> 1. Cruzamiento de tipos sexuales opuestos (MATa × MATα) en placa YPD</div>
+              <div class="step-badges">
+                <span class="badge-tech">Placa YPD fresca</span>
+                <span class="badge-tech">30 °C • 2–3 horas</span>
+              </div>
+            </div>
+            <p style="font-size: 0.9rem; margin-top: 8px; color: #cbd5e1;">
+              Con un palillo estéril picar una colonia de un <em>mating type</em> y esparcir en el centro de una placa de YPD fresca. Repetir para el otro <em>mating type</em> y esparcir sobre el anterior. Incubar a <strong>30 °C por 2–3 horas</strong> (conservar en la mesada hasta la próxima citación).
+            </p>
+            <div class="why-box">
+              <strong>Fundamento biológico:</strong> En el medio rico YPD, las células haploides <strong>a</strong> y <strong>α</strong> entran en contacto íntimo, responden a las feromonas peptídicas opuestas y fusionan sus células y núcleos formando cigotos diploides.
+            </div>
+          </div>
+
+          <div class="protocol-step" onclick="toggleStepComplete(this)">
+            <div class="step-header">
+              <div class="step-title"><input type="checkbox" /> 2. Repique en placa selectiva para diploides (dividida en tercios)</div>
+              <div class="step-badges">
+                <span class="badge-tech">3 hs post-cruzamiento</span>
+                <span class="badge-tech">Placa en tercios</span>
+              </div>
+            </div>
+            <p style="font-size: 0.9rem; margin-top: 8px; color: #cbd5e1;">
+              Pasadas las 3 horas, repicar la mezcla del cruzamiento en una placa selectiva para diploides junto con las dos cepas parentales haploides como controles (dividiendo la placa en tercios).
+            </p>
+            <details class="question-box" onclick="event.stopPropagation()">
+              <summary>❓ Pregunta de la Guía: ¿Cuál debería ser la composición de esta placa? ¿Qué esperan observar en la próxima citación?</summary>
+              <p style="font-size: 0.88rem; margin-top: 8px; color: #e2e8f0;">
+                • <strong>Composición:</strong> Debe ser un medio con una <strong>fuente de carbono no fermentable como el glicerol (medio YPG)</strong> (o medio mínimo selectivo si se emplean marcadores de auxotrofía complementarios).<br/>
+                • <strong>Resultado esperado:</strong> Las dos cepas parentales haploides (<em>lip2⁻ LIP3⁺</em> y <em>LIP2⁺ lip3⁻</em>) tienen bloqueada la vía de lipoilación y la respiración mitocondrial, por lo que <strong>no crecen en sus tercios</strong>. En cambio, en el tercio del cruzamiento crecen las <strong>células diploides (<em>LIP2⁺/lip2⁻, LIP3⁺/lip3⁻</em>)</strong> por <strong>complementación genética</strong> de ambas mutaciones recesivas.
+              </p>
+            </details>
+          </div>
+
+          <h3 style="margin: 22px 0 10px; color: #c084fc;">B) Inducción de la esporulación (Inicio del cultivo diploide)</h3>
+
+          <div class="protocol-step" onclick="toggleStepComplete(this)">
+            <div class="step-header">
+              <div class="step-title"><input type="checkbox" /> 3. Inoculación de la cepa diploide en medio YPD líquido</div>
+              <div class="step-badges">
+                <span class="badge-tech">3 ml YPD líquido</span>
+                <span class="badge-tech">30 °C • ON (Toda la noche)</span>
+              </div>
+            </div>
+            <p style="font-size: 0.9rem; margin-top: 8px; color: #cbd5e1;">
+              Pasadas las 3 horas de obtención de células diploides, inocular <strong>3 ml de medio YPD líquido</strong> con la cepa diploide y cultivar toda la noche (ON) a <strong>30 °C</strong>.
+            </p>
+          </div>
+
+          <h3 style="margin: 22px 0 10px; color: #2dd4bf;">C) Purificación y plaqueo masivo de esporas (Cultivo esporulado de la semana anterior)</h3>
+
+          <div class="protocol-step" onclick="toggleStepComplete(this)">
+            <div class="step-header">
+              <div class="step-title"><input type="checkbox" /> 4. Lavado del cultivo esporulado y resuspensión en Buffer Tris-EDTA</div>
+              <div class="step-badges">
+                <span class="badge-tech">1 ml cultivo esporulado</span>
+                <span class="badge-tech">200 µl Tris-HCl pH 8 (50 mM) + EDTA (10 mM)</span>
+              </div>
+            </div>
+            <p style="font-size: 0.9rem; margin-top: 8px; color: #cbd5e1;">
+              Tomar <strong>1 ml</strong> de los cultivos esporulados preparados por la comisión de la semana anterior y lavar <strong>dos veces con H₂Od estéril</strong>. Resuspender en <strong>200 µl de buffer Tris-HCl pH 8 50 mM, EDTA 10 mM</strong>.
+            </p>
+          </div>
+
+          <div class="protocol-step" onclick="toggleStepComplete(this)">
+            <div class="step-header">
+              <div class="step-title"><input type="checkbox" /> 5. Digestión enzimática de la pared del asca (Liticasa + β-mercaptoetanol)</div>
+              <div class="step-badges">
+                <span class="badge-tech">100 µl Liticasa (5 mg/ml)</span>
+                <span class="badge-tech">10 µl β-ME 1 M</span>
+                <span class="badge-tech">37 °C • 40 min</span>
+              </div>
+            </div>
+            <p style="font-size: 0.9rem; margin-top: 8px; color: #cbd5e1;">
+              Agregar <strong>100 µl de solución stock de Liticasa</strong> (5 mg/ml en buffer sorbitol 1 M, EDTA 0,1 M pH 8) y <strong>10 µl de β-mercaptoetanol 1 M</strong>. Incubar a <strong>37 °C por 40 minutos</strong>.
+            </p>
+            <div class="why-box">
+              <strong>¿Qué hace cada reactivo?</strong><br/>
+              • <strong>β-mercaptoetanol (1 M):</strong> Reduce los puentes disulfuro de las mannoproteínas externas de la pared celular/asca, abriendo paso a la enzima.<br/>
+              • <strong>Liticasa (5 mg/ml):</strong> Hidroliza los polímeros de β-1,3-glucano de la pared del saco del asca.<br/>
+              • <strong>Sorbitol 1 M:</strong> Estabilizador osmótico en el stock enzimático.
+            </div>
+          </div>
+
+          <div class="protocol-step" onclick="toggleStepComplete(this)">
+            <div class="step-header">
+              <div class="step-title"><input type="checkbox" /> 6. Agregado de detergente Tween 80 y primer ciclo de Vórtex/Hielo</div>
+              <div class="step-badges">
+                <span class="badge-tech">30 µl Tween 80 (0,5%)</span>
+                <span class="badge-tech">Hielo 15 min</span>
+                <span class="badge-tech">2× (Vórtex 1 min / Hielo 30 s)</span>
+              </div>
+            </div>
+            <p style="font-size: 0.9rem; margin-top: 8px; color: #cbd5e1;">
+              Agregar <strong>30 µl de Tween 80 0,5% (v/v)</strong>. Incubar en <strong>hielo por 15 min</strong>. Vortexear por <strong>1 min</strong> e incubar en hielo por <strong>30 segundos</strong> (repetir 2 veces).
+            </p>
+            <div class="why-box">
+              <strong>Función del Tween 80:</strong> Es un tensioactivo no iónico que evita que las ascosporas hidrofóbicas se agreguen o queden adheridas entre sí y a las paredes del tubo.
+            </div>
+          </div>
+
+          <div class="protocol-step" onclick="toggleStepComplete(this)">
+            <div class="step-header">
+              <div class="step-title"><input type="checkbox" /> 7. Disgregación mecánica con bolitas de vidrio estériles y monitoreo microscópico</div>
+              <div class="step-badges">
+                <span class="badge-tech">10.000 rpm • 3 min</span>
+                <span class="badge-tech">200 µl bolitas de vidrio</span>
+                <span class="badge-tech">≥10× (Vórtex 1 min / Hielo 1 min)</span>
+              </div>
+            </div>
+            <p style="font-size: 0.9rem; margin-top: 8px; color: #cbd5e1;">
+              Centrifugar <strong>3 min a 10.000 rpm</strong>. Resuspender en <strong>270 µl de H₂Od</strong>, agregar <strong>30 µl de Tween 80 0,5%</strong> e incorporar al tubo con <strong>200 µl de bolitas de vidrio estériles</strong>. Vortexear 1 min e incubar en hielo 1 min, <strong>repetir al menos 10 veces</strong>. Monitorear al microscopio <strong>3 µl</strong> de la suspensión hasta ver sólo esporas completamente disgregadas.
+            </p>
+          </div>
+
+          <div class="protocol-step" onclick="toggleStepComplete(this)">
+            <div class="step-header">
+              <div class="step-title"><input type="checkbox" /> 8. Recuperación del sobrenadante, control a 50 °C y siembra en YPDA e YPG</div>
+              <div class="step-badges">
+                <span class="badge-tech">2 lavados × 400 µl H₂Od (Vf ~1 ml)</span>
+                <span class="badge-tech">50 °C • 10 min (opcional)</span>
+                <span class="badge-tech">Plaqueo 50–100 µl</span>
+              </div>
+            </div>
+            <p style="font-size: 0.9rem; margin-top: 8px; color: #cbd5e1;">
+              Dejar decantar las bolitas, tomar el sobrenadante y lavar las bolitas <strong>dos veces con 400 µl de H₂Od estéril</strong>, juntando los lavados con el sobrenadante (<strong>Vf ~ 1 mL</strong>). Observar al microscopio: si aún se observan células vegetativas, <strong>incubar 10 minutos a 50 °C</strong> para eliminarlas. Sembrar <strong>50–100 µl en YPDA</strong> (control de viabilidad) y <strong>50–100 µl en YPG</strong> (selección de esporas recombinantes con <em>LIP2</em> y <em>LIP3</em> salvajes).
+            </p>
+          </div>
+        </div>
+
+        <!-- DÍA 2 -->
+        <div id="protocol-day-2" style="display: none;">
+          <h3 style="margin: 18px 0 10px; color: #fbbf24;">A) Observación microscópica de cigotos</h3>
+
+          <div class="protocol-step" onclick="toggleStepComplete(this)">
+            <div class="step-header">
+              <div class="step-title"><input type="checkbox" /> 1. Montaje en fresco de células diploides / cigotos</div>
+              <div class="step-badges">
+                <span class="badge-tech">Portaobjetos + 5 µl H₂Od</span>
+                <span class="badge-tech">Microscopio óptico</span>
+              </div>
+            </div>
+            <p style="font-size: 0.9rem; margin-top: 8px; color: #cbd5e1;">
+              Picar una pequeña cantidad de células diploides obtenidas el día anterior y colocar en un portaobjetos con <strong>5 µl de agua destilada</strong>. Colocar cubreobjetos y observar al microscopio.
+            </p>
+          </div>
+
+          <h3 style="margin: 22px 0 10px; color: #c084fc;">B) Inducción de la esporulación de cultivos de <em>S. cerevisiae</em></h3>
+
+          <div class="protocol-step" onclick="toggleStepComplete(this)">
+            <div class="step-header">
+              <div class="step-title"><input type="checkbox" /> 2. Pasaje a medio de pre-esporulación YPAc (Acetato de potasio 1%)</div>
+              <div class="step-badges">
+                <span class="badge-tech">5.000 rpm • 2 min</span>
+                <span class="badge-tech">1 ml YPAc</span>
+                <span class="badge-tech">30 °C • ON (Docente)</span>
+              </div>
+            </div>
+            <p style="font-size: 0.9rem; margin-top: 8px; color: #cbd5e1;">
+              Centrifugar <strong>1 ml</strong> del cultivo de células diploides realizado el Día 1 durante <strong>2 min a 5.000 rpm</strong> en microcentrífuga. Resuspender en <strong>1 ml final de YP con acetato de potasio 1% (YPAc)</strong>. Trasvasar a un tubo de ensayo estéril y cultivar toda la noche a <strong>30 °C</strong>.
+            </p>
+            <div class="why-box">
+              <strong>¿Por qué se pasa primero por YPAc?</strong> Reemplaza la glucosa por acetato de potasio (fuente de carbono no fermentable), lo que desreprime la respiración mitocondrial y adapta metabólicamente a las células diploides antes del ayuno de nitrógeno.
+            </div>
+          </div>
+
+          <div class="protocol-step" onclick="toggleStepComplete(this)">
+            <div class="step-header">
+              <div class="step-title"><input type="checkbox" /> 3. Pasaje a medio de esporulación (Acetato de potasio 1% puro)</div>
+              <div class="step-badges">
+                <span class="badge-tech">5.000 rpm • 2 min</span>
+                <span class="badge-tech">1 ml KAc 1% (×4 grupos en erlenmeyer 125 ml)</span>
+                <span class="badge-tech">30 °C • 2 a 4 días con agitación</span>
+              </div>
+            </div>
+            <p style="font-size: 0.9rem; margin-top: 8px; color: #cbd5e1;">
+              Tomar 1 ml del cultivo en YPAc, centrifugar <strong>2 min a 5.000 rpm</strong> y resuspender en <strong>1 ml final de Acetato de potasio 1%</strong>. Juntar el volumen de los 4 grupos en un frasco de vidrio de 125 ml y dejar entre <strong>2 y 4 días a 30 °C con agitación</strong> (para las comisiones de la semana siguiente).
+            </p>
+            <div class="why-box">
+              <strong>Disparo de la meiosis:</strong> La ausencia de fuente de nitrógeno combinada con una fuente de carbono no fermentable (acetato de potasio 1%) detiene el ciclo mitótico e induce a los diploides a entrar en meiosis y formar ascas con 4 ascosporas.
+            </div>
+          </div>
+
+          <h3 style="margin: 22px 0 10px; color: #22c55e;">C) Observación de células haploides recombinantes obtenidas</h3>
+
+          <div class="protocol-step" onclick="toggleStepComplete(this)">
+            <div class="step-header">
+              <div class="step-title"><input type="checkbox" /> 4. Comparación del crecimiento entre placas YPDA e YPG</div>
+              <div class="step-badges">
+                <span class="badge-tech">Recuento comparativo</span>
+              </div>
+            </div>
+            <p style="font-size: 0.9rem; margin-top: 8px; color: #cbd5e1;">
+              Observar los resultados de las placas sembradas el Día 1. Comparar el número de colonias entre <strong>YPDA</strong> (donde crecen todas las esporas viables por fermentación) e <strong>YPG</strong> (donde solo crecen las esporas haploides recombinantes portadoras de los alelos salvajes <em>LIP2⁺</em> y <em>LIP3⁺</em>).
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SECCIÓN 4: VÍA DE LIPOILACIÓN Y MEDIOS
+         ========================================== -->
+    <section id="tab-lipoilacion" class="tab-section">
+      <div class="grid-2">
+        <div class="card">
+          <h2>🧬 Vía de Lipoilación de Proteínas en <em>S. cerevisiae</em></h2>
+          <p style="font-size: 0.92rem; color: #e2e8f0; margin-bottom: 12px;">
+            En este trabajo práctico se utilizan cepas mutantes en la vía de síntesis y unión covalente del <strong>ácido lipoico</strong>, un cofactor esencial que transfiere grupos acilo y electrones en complejos multienzimáticos mitocondriales:
+          </p>
+          <ul style="margin-left: 18px; font-size: 0.9rem; color: #cbd5e1; margin-bottom: 14px;">
+            <li><strong>Complejo Piruvato Deshidrogenasa (PDH)</strong> — necesario para la respiración.</li>
+            <li><strong>Complejo α-Cetoglutarato Deshidrogenasa (KGDH)</strong> — necesario para la respiración.</li>
+            <li><strong>Complejo de Clivaje de Glicina (Gcv)</strong> — catabolismo de la glicina.</li>
+          </ul>
+          <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid var(--border); border-radius: 10px; padding: 14px;">
+            <p style="font-size: 0.88rem; margin-bottom: 8px;">
+              🔹 <strong>Gen <em>LIP2</em> (Octanoil transferasa):</strong> Transfiere el grupo octanoico desde la ACP (<em>Acyl Carrier Protein</em>) a la subunidad H del complejo de clivaje de glicina (GcvH).
+            </p>
+            <p style="font-size: 0.88rem;">
+              🔸 <strong>Gen <em>LIP3</em> (Lipoil sintasa):</strong> Inserta átomos de azufre en la cadena octanoílica unida a la proteína y transfiere el grupo lipoilo a la subunidad E2 de los complejos deshidrogenasa.
+            </p>
+          </div>
+          <div class="why-box" style="margin-top: 14px;">
+            <strong>Consecuencia fenotípica:</strong> Sin ácido lipoico, los complejos pierden actividad y <strong>se bloquea la respiración mitocondrial</strong>. Las mutantes <em>lip2⁻</em> o <em>lip3⁻</em> pueden crecer en glucosa (YPDA) fermentando, pero <strong>no pueden crecer en glicerol (YPG)</strong>.
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>🧪 Composición y Función de los Medios de Cultivo</h2>
+          <table class="media-table">
+            <thead>
+              <tr>
+                <th>Medio</th>
+                <th>Composición</th>
+                <th>Función en el TP 4</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>YPDA</strong></td>
+                <td>Glucosa 2%<br/>Bactopeptona 2%<br/>Extracto de levadura 1%<br/>Adenina 20 mg/l</td>
+                <td>Medio rico fermentable. Permite el apareamiento, el crecimiento vegetativo y el control de viabilidad total de esporas.</td>
+              </tr>
+              <tr>
+                <td><strong>YPAc</strong></td>
+                <td>Bactopeptona 2%<br/>Extracto de levadura 1%<br/>Acetato de potasio 1%</td>
+                <td>Medio rico no fermentable de pre-esporulación. Desreprime la respiración antes del ayuno de nitrógeno.</td>
+              </tr>
+              <tr>
+                <td><strong>KAc 1%</strong></td>
+                <td>Acetato de potasio 1% (p/v) en agua</td>
+                <td>Medio de esporulación (sin nitrógeno ni azúcares fermentables). Induce la meiosis y formación de ascas.</td>
+              </tr>
+              <tr>
+                <td><strong>YPG</strong></td>
+                <td>Extracto de levadura, Peptona y Glicerol (fuente no fermentable)</td>
+                <td>Medio selectivo respiratorio. Solo crecen células con la vía de lipoilación activa (<em>LIP2⁺ LIP3⁺</em>).</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Simulador visual de las placas de Petri -->
+      <div class="card" style="margin-top: 24px;">
+        <h2>🧫 Simulador de Resultados en Placas de Petri</h2>
+        <div class="petri-container">
+          <!-- Placa 1: Tercios (Complementación) -->
+          <div class="petri-card">
+            <h3>1. Placa Selectiva en Tercios</h3>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">Complementación en el diploide (Medio YPG)</p>
+            <svg viewBox="0 0 200 200" width="180" height="180">
+              <circle cx="100" cy="100" r="90" fill="#d9b978" stroke="#94a3b8" stroke-width="4"/>
+              <!-- Líneas de tercios -->
+              <line x1="100" y1="100" x2="100" y2="10" stroke="rgba(0,0,0,0.35)" stroke-width="2"/>
+              <line x1="100" y1="100" x2="178" y2="145" stroke="rgba(0,0,0,0.35)" stroke-width="2"/>
+              <line x1="100" y1="100" x2="22" y2="145" stroke="rgba(0,0,0,0.35)" stroke-width="2"/>
+              <!-- Tercio 1: Parental lip2- (Sin crecimiento) -->
+              <text x="34" y="72" fill="#451a03" font-size="9" font-weight="bold">lip2⁻ LIP3⁺</text>
+              <text x="40" y="85" fill="#78350f" font-size="8">(No crece)</text>
+              <!-- Tercio 2: Parental lip3- (Sin crecimiento) -->
+              <text x="112" y="72" fill="#451a03" font-size="9" font-weight="bold">LIP2⁺ lip3⁻</text>
+              <text x="118" y="85" fill="#78350f" font-size="8">(No crece)</text>
+              <!-- Tercio 3: Diploide a/alpha (Crece por complementación) -->
+              <path d="M 65 140 Q 100 128 135 142 Q 98 152 70 158 Q 102 165 128 168" fill="none" stroke="#fef3c7" stroke-width="6" stroke-linecap="round"/>
+              <text x="64" y="182" fill="#451a03" font-size="9" font-weight="bold">Diploide (Crece)</text>
+            </svg>
+          </div>
+
+          <!-- Placa 2: Plaqueo de esporas en YPDA -->
+          <div class="petri-card">
+            <h3>2. Esporas en Placa YPDA</h3>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">Control de viabilidad total (Glucosa)</p>
+            <svg viewBox="0 0 200 200" width="180" height="180">
+              <circle cx="100" cy="100" r="90" fill="#e2c58a" stroke="#94a3b8" stroke-width="4"/>
+              <!-- Numerosas colonias (todas las combinaciones crecen fermentando) -->
+              <g fill="#fef9c3" stroke="#ca8a04" stroke-width="0.6">
+                <circle cx="55" cy="60" r="4"/><circle cx="85" cy="45" r="4"/><circle cx="125" cy="52" r="4"/><circle cx="145" cy="75" r="4"/>
+                <circle cx="45" cy="95" r="4"/><circle cx="75" cy="82" r="4"/><circle cx="105" cy="72" r="4"/><circle cx="132" cy="98" r="4"/>
+                <circle cx="62" cy="125" r="4"/><circle cx="92" cy="112" r="4"/><circle cx="118" cy="128" r="4"/><circle cx="152" cy="118" r="4"/>
+                <circle cx="52" cy="148" r="4"/><circle cx="84" cy="155" r="4"/><circle cx="112" cy="160" r="4"/><circle cx="138" cy="145" r="4"/>
+                <circle cx="70" cy="65" r="3.5"/><circle cx="100" cy="95" r="4"/><circle cx="68" cy="105" r="3.5"/><circle cx="122" cy="78" r="3.5"/>
+                <circle cx="95" cy="138" r="4"/><circle cx="142" cy="58" r="3.5"/><circle cx="60" cy="140" r="3.5"/><circle cx="108" cy="55" r="3.5"/>
+              </g>
+            </svg>
+            <p style="font-size: 0.8rem; color: #cbd5e1; margin-top: 6px;">Crecen tanto las esporas parentales como las recombinantes.</p>
+          </div>
+
+          <!-- Placa 3: Plaqueo de esporas en YPG -->
+          <div class="petri-card">
+            <h3>3. Esporas en Placa YPG</h3>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">Selección de recombinantes <em>LIP2⁺ LIP3⁺</em> (Glicerol)</p>
+            <svg viewBox="0 0 200 200" width="180" height="180">
+              <circle cx="100" cy="100" r="90" fill="#d4b26f" stroke="#94a3b8" stroke-width="4"/>
+              <!-- Menor número de colonias (~1/4 si segregan independientemente) -->
+              <g fill="#fef9c3" stroke="#ca8a04" stroke-width="0.8">
+                <circle cx="65" cy="65" r="4.5"/>
+                <circle cx="128" cy="62" r="4.5"/>
+                <circle cx="98" cy="96" r="4.5"/>
+                <circle cx="62" cy="132" r="4.5"/>
+                <circle cx="132" cy="128" r="4.5"/>
+                <circle cx="102" cy="152" r="4.5"/>
+              </g>
+            </svg>
+            <p style="font-size: 0.8rem; color: #cbd5e1; margin-top: 6px;">Solo crecen las esporas haploides recombinantes salvajes (<em>LIP2⁺ LIP3⁺</em>).</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    /* ==========================================
+       NAVEGACIÓN ENTRE PESTAÑAS
+       ========================================== */
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-section').forEach(sec => sec.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.getElementById('tab-' + tabId).classList.add('active');
+      const idxMap = { ciclo: 0, microscopio: 1, protocolo: 2, lipoilacion: 3 };
+      document.querySelectorAll('.tab-btn')[idxMap[tabId]].classList.add('active');
+      if (tabId === 'microscopio') {
+        drawMicroscope();
+      }
+    }
+
+    /* ==========================================
+       DATOS DEL CICLO DE VIDA INTERACTIVO
+       ========================================== */
+    const lifecycleData = {
+      haploid: {
+        badge: 'Estadio Haploide (1n)',
+        title: 'Células Haploides Vegetativas (MATa y MATα)',
+        html: `
+          <p style="margin-bottom: 10px;">
+            A diferencia de muchos eucariotas, <em>S. cerevisiae</em> es estable tanto en estado haploide (<strong>1n = 16 cromosomas</strong>) como diploide. Esto permite aislar y manifestar mutaciones recesivas (como <em>lip2⁻</em> o <em>lip3⁻</em>) directamente en cepas haploides.
+          </p>
+          <ul style="margin-left: 18px; font-size: 0.92rem; color: #cbd5e1;">
+            <li><strong>Tipos sexuales (<em>mating types</em>):</strong> Existen dos tipos celulares haploides, <strong>a</strong> y <strong>α</strong>, codificados por los alelos <em>MATa</em> y <em>MATα</em> (análogos a gametos femeninos y masculinos).</li>
+            <li><strong>Morfología al microscopio:</strong> Esferoides de <strong>~4 µm de diámetro</strong> (volumen ~70 µm³).</li>
+            <li><strong>Patrón de gemación:</strong> Se dividen mitóticamente por gemación axial (la nueva yema emerge <strong>adyacente</strong> a la cicatriz anterior) y suelen formar pequeños racimos en crecimiento exponencial.</li>
+          </ul>
+          <div class="why-box" style="margin-top: 14px;">
+            <strong>En el TP 4 (Día 1):</strong> Partimos de colonias haploides de <em>mating types</em> opuestos portadoras de mutaciones en la vía de lipoilación (<em>lip2⁻</em> y <em>lip3⁻</em>).
+          </div>
+        `
+      },
+      mating: {
+        badge: 'Señalización por Feromonas',
+        title: 'Apareamiento Sexual (Mating a × α)',
+        html: `
+          <p style="margin-bottom: 10px;">
+            Cuando células haploides <strong>MATa</strong> y <strong>MATα</strong> se mezclan sobre un medio rico (como una placa de YPD fresca a 30 °C), se comunican mediante hormonas peptídicas difusibles:
+          </p>
+          <ul style="margin-left: 18px; font-size: 0.92rem; color: #cbd5e1;">
+            <li>Las células <strong>a</strong> secretan el <strong>factor a</strong> y las células <strong>α</strong> secretan el <strong>factor α</strong>.</li>
+            <li>Estas feromonas se unen a receptores en la superficie de las células del tipo opuesto, detienen su ciclo celular en G1 e inducen cambios morfológicos en la pared celular (alargamiento direccional o <em>shmoo</em>).</li>
+            <li>Esto permite el contacto y la <strong>fusión celular (plasmogamia)</strong>.</li>
+          </ul>
+          <div class="why-box" style="margin-top: 14px;">
+            <strong>En el TP 4 (Día 1):</strong> Se superponen ambas cepas con palillo estéril en el centro de una placa YPD y se incuba a <strong>30 °C durante 2 a 3 horas</strong>.
+          </div>
+        `
+      },
+      zygote: {
+        badge: 'Fusión Celular y Nuclear',
+        title: 'Formación del Cigoto Diploide (2n)',
+        html: `
+          <p style="margin-bottom: 10px;">
+            Una vez completada la fusión de las superficies celulares, los dos núcleos haploides se fusionan (<strong>cariogamia</strong>) originando un <strong>cigoto diploide (2n)</strong> heterocigota para el locus de tipo sexual (<em>MATa/MATα</em>).
+          </p>
+          <ul style="margin-left: 18px; font-size: 0.92rem; color: #cbd5e1;">
+            <li><strong>Identificación al microscopio:</strong> Los cigotos se reconocen inconfundiblemente entre las 3 y 6 horas por su <strong>cuello cigótico grueso</strong> (forma bilobulada de maní o mancuerna) del cual suele emerger la primera yema diploide.</li>
+            <li><strong>Complementación en el TP 4:</strong> Al cruzarse la cepa <em>lip2⁻ LIP3⁺</em> con <em>LIP2⁺ lip3⁻</em>, el cigoto resultante es <em>LIP2⁺/lip2⁻ LIP3⁺/lip3⁻</em> y recupera la respiración mitocondrial.</li>
+          </ul>
+          <div class="why-box" style="margin-top: 14px;">
+            <strong>En el TP 4 (Día 2):</strong> Se pica una pequeña cantidad de células del cruzamiento en un portaobjetos con <strong>5 µl de agua destilada</strong> para observar los cigotos al microscopio.
+          </div>
+        `
+      },
+      diploid: {
+        badge: 'Estadio Diploide (2n)',
+        title: 'Crecimiento Vegetativo Diploide (Mitosis)',
+        html: `
+          <p style="margin-bottom: 10px;">
+            En presencia de nutrientes (como medio YPD líquido o placas YPG), el cigoto diploide prolifera vegetativamente por mitosis (gemación) manteniendo estable su estado <strong>2n</strong>.
+          </p>
+          <ul style="margin-left: 18px; font-size: 0.92rem; color: #cbd5e1;">
+            <li><strong>Morfología al microscopio:</strong> Células elipsoidales más grandes que las haploides, de <strong>5 × 6 µm</strong> (volumen ~120 µm³, el doble de ADN: 0,034 pg vs 0,017 pg).</li>
+            <li><strong>Patrón de gemación bipolar:</strong> En los diploides, las yemas emergen en el <strong>polo opuesto</strong> a la cicatriz previa.</li>
+            <li><strong>Estado regulatorio:</strong> El par heterocigota <em>MATa/MATα</em> reprime las funciones de apareamiento haploide y habilita la capacidad de esporular ante el ayuno nutricional.</li>
+          </ul>
+        `
+      },
+      ascus: {
+        badge: 'Meiosis y Esporulación',
+        title: 'Asca con 4 Ascosporas Haploides (Tétrada)',
+        html: `
+          <p style="margin-bottom: 10px;">
+            En condiciones de deficiencia de nutrientes (ausencia de fuente de nitrógeno y presencia de una fuente de carbono no fermentable como el <strong>acetato de potasio al 1%</strong>), la célula diploide sufre <strong>meiosis</strong>.
+          </p>
+          <ul style="margin-left: 18px; font-size: 0.92rem; color: #cbd5e1;">
+            <li><strong>Estructura del Asca:</strong> Los 4 productos meióticos haploides (dos <em>MATa</em> y dos <em>MATα</em>) quedan encapsulados como <strong>ascosporas</strong> dentro de una estructura tipo saco llamada <strong>asca</strong>.</li>
+            <li>Durante la meiosis ocurren el entrecruzamiento cromosómico y la segregación independiente de los alelos <em>LIP2</em> y <em>LIP3</em>, generando esporas haploides recombinantes <strong><em>LIP2⁺ LIP3⁺</em></strong>.</li>
+          </ul>
+          <div class="why-box" style="margin-top: 14px;">
+            <strong>En el TP 4 (Día 2):</strong> Los diploides se pre-incuban toda la noche en <strong>YPAc</strong> y luego se transfieren a <strong>Acetato de potasio 1%</strong> durante 2 a 4 días a 30 °C con agitación.
+          </div>
+        `
+      },
+      germination: {
+        badge: 'Purificación y Germinación',
+        title: 'Liberación Masiva de Esporas y Germinación',
+        html: `
+          <p style="margin-bottom: 10px;">
+            Al restituirse los nutrientes, las ascosporas germinan y retoman la división vegetativa haploide. En el protocolo del TP 4 realizamos un <strong>análisis masivo de esporas</strong>:
+          </p>
+          <ul style="margin-left: 18px; font-size: 0.92rem; color: #cbd5e1;">
+            <li>Se digiere la pared del asca con <strong>Liticasa y β-mercaptoetanol</strong> a 37 °C por 40 min.</li>
+            <li>Se disgregan las esporas con <strong>Tween 80 (0,5%) y bolitas de vidrio estériles</strong> mediante ciclos de vórtex y hielo, monitoreando 3 µl al microscopio.</li>
+            <li>Si quedan células vegetativas diploides sin esporular, se eliminan incubando <strong>10 min a 50 °C</strong>.</li>
+            <li>Se siembran 50–100 µl en <strong>YPDA</strong> (viabilidad) y <strong>YPG</strong> (selección de recombinantes <em>LIP2⁺ LIP3⁺</em>).</li>
+          </ul>
+        `
+      }
+    };
+
+    function selectLifecycleStage(stageKey) {
+      document.querySelectorAll('.svg-stage-node').forEach(el => el.classList.remove('selected'));
+      document.getElementById('node-' + stageKey).classList.add('selected');
+      const data = lifecycleData[stageKey];
+      document.getElementById('lifecycle-detail-panel').innerHTML = `
+        <span class="pill pill-2n">${data.badge}</span>
+        <h2 style="margin-top: 8px;">${data.title}</h2>
+        <div style="font-size: 0.94rem; color: #e2e8f0;">${data.html}</div>
+        <button class="btn-small active" style="margin-top: 16px;" onclick="jumpToMicroscope('${stageKey}')">
+          🔬 Ver este estadio al Microscopio Óptico
+        </button>
+      `;
+    }
+
+    function jumpToMicroscope(stageKey) {
+      const mapStage = stageKey === 'mating' ? 'zygote' : (stageKey === 'germination' ? 'spores' : stageKey);
+      switchTab('microscopio');
+      const btns = document.querySelectorAll('.stage-selector-btn');
+      const order = ['haploid', 'zygote', 'diploid', 'ascus', 'spores'];
+      const idx = order.indexOf(mapStage);
+      if (idx >= 0) {
+        setMicroscopeStage(mapStage, btns[idx]);
+      }
+    }
+
+    /* ==========================================
+       SIMULADOR DE MICROSCOPIO ÓPTICO (CANVAS)
+       ========================================== */
+    let currentMicroStage = 'haploid';
+    let currentMag = 100; // 40 or 100
+    let currentOptics = 'brightfield'; // 'brightfield' or 'phase'
+    let currentFocus = 0;
+
+    const microscopeStageDescriptions = {
+      haploid: {
+        title: 'Estadio 1: Células Haploides (1n) en Gemación Vegetativa',
+        size: 'Esferoides de ~4 µm de diámetro (Volumen: 70 µm³)',
+        keyFeatures: 'Células esféricas pequeñas con gemación axial (las nuevas yemas aparecen adyacentes a la cicatriz previa) y tendencia a agruparse en pequeños racimos durante el crecimiento exponencial.'
+      },
+      zygote: {
+        title: 'Estadio 2: Apareamiento (Shmoo) y Cigotos Diploides (Día 2)',
+        size: 'Células fusionadas (~8–10 µm de largo total) con cuello cigótico grueso',
+        keyFeatures: 'Se observan células con proyecciones de apareamiento inducidas por feromonas y cigotos bilobulados (forma de maní o mancuerna) con un cuello cigótico ancho característico y el inicio de la primera yema diploide.'
+      },
+      diploid: {
+        title: 'Estadio 3: Células Diploides (2n) en Crecimiento Vegetativo',
+        size: 'Elipsoides de 5 × 6 µm (Volumen: 120 µm³)',
+        keyFeatures: 'Células más grandes y ovaladas/elipsoidales que las haploides, con vacuola intracelular prominente y gemación bipolar (la célula hija brota en el polo opuesto al anterior).'
+      },
+      ascus: {
+        title: 'Estadio 4: Cultivo Esporulado — Ascas con Tétradas',
+        size: 'Ascas de ~6–7 µm conteniendo 4 ascosporas haploides (~2,5 µm c/u)',
+        keyFeatures: 'Tras 2–4 días en acetato de potasio 1%, se observan los sacos (ascas) encerrando 4 ascosporas haploides refringentes en disposición tetraédrica o romboidal (y ocasionalmente ascas con 3 esporas).'
+      },
+      spores: {
+        title: 'Estadio 5: Monitoreo de Esporas Purificadas (Día 1 — 3 µl al microscopio)',
+        size: 'Ascosporas haploides libres e individuales (~2,5–3 µm)',
+        keyFeatures: 'Luego del tratamiento con Liticasa + β-mercaptoetanol (40 min a 37 °C) y ≥10 ciclos de vórtex con bolitas de vidrio y Tween 80, las esporas aparecen completamente separadas y sin pared de asca.'
+      }
+    };
+
+    function setMicroscopeStage(stage, btnEl) {
+      currentMicroStage = stage;
+      document.querySelectorAll('.stage-selector-btn').forEach(b => b.classList.remove('active'));
+      if (btnEl) btnEl.classList.add('active');
+      updateMicroscopeInfo();
+      drawMicroscope();
+    }
+
+    function setMagnification(mag) {
+      currentMag = mag;
+      document.getElementById('btn40x').classList.toggle('active', mag === 40);
+      document.getElementById('btn100x').classList.toggle('active', mag === 100);
+      document.getElementById('scaleBarLabel').textContent = mag === 100 ? '5 µm (1000×)' : '12 µm (400×)';
+      drawMicroscope();
+    }
+
+    function setOpticsMode(mode) {
+      currentOptics = mode;
+      document.getElementById('btnBright').classList.toggle('active', mode === 'brightfield');
+      document.getElementById('btnPhase').classList.toggle('active', mode === 'phase');
+      drawMicroscope();
+    }
+
+    function updateFocus(val) {
+      currentFocus = parseFloat(val);
+      drawMicroscope();
+    }
+
+    function updateMicroscopeInfo() {
+      const info = microscopeStageDescriptions[currentMicroStage];
+      document.getElementById('microscope-stage-info').innerHTML = `
+        <h3>${info.title}</h3>
+        <p style="font-size: 0.86rem; color: #5eead4; margin-bottom: 6px;"><strong>Dimensiones:</strong> ${info.size}</p>
+        <p style="font-size: 0.9rem; color: #e2e8f0;"><strong>Qué buscar en el campo óptico:</strong> ${info.keyFeatures}</p>
+      `;
+    }
+
+    function drawYeastCell(ctx, x, y, rx, ry, angle, isPhase) {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(angle);
+
+      // Halo de refracción típico de levaduras al microscopio óptico
+      ctx.beginPath();
+      ctx.ellipse(0, 0, rx + 3, ry + 3, 0, 0, Math.PI * 2);
+      ctx.strokeStyle = isPhase ? 'rgba(255, 255, 230, 0.85)' : 'rgba(255, 255, 255, 0.65)';
+      ctx.lineWidth = isPhase ? 3.2 : 2;
+      ctx.stroke();
+
+      // Cuerpo celular y pared refringente
+      const grad = ctx.createRadialGradient(-rx * 0.25, -ry * 0.25, rx * 0.1, 0, 0, rx);
+      if (isPhase) {
+        grad.addColorStop(0, '#52606d');
+        grad.addColorStop(0.75, '#243b53');
+        grad.addColorStop(1, '#102a43');
+      } else {
+        grad.addColorStop(0, '#f4f6ee');
+        grad.addColorStop(0.72, '#cdd5c0');
+        grad.addColorStop(1, '#6c7a65');
+      }
+
+      ctx.beginPath();
+      ctx.ellipse(0, 0, rx, ry, 0, 0, Math.PI * 2);
+      ctx.fillStyle = grad;
+      ctx.fill();
+      ctx.lineWidth = 2.2;
+      ctx.strokeStyle = isPhase ? '#d9e2ec' : '#3d4739';
+      ctx.stroke();
+
+      // Vacuola interna sutil
+      ctx.beginPath();
+      ctx.arc(rx * 0.18, ry * 0.12, rx * 0.36, 0, Math.PI * 2);
+      ctx.fillStyle = isPhase ? 'rgba(255,255,255,0.12)' : 'rgba(255,255,255,0.38)';
+      ctx.fill();
+
+      ctx.restore();
+    }
+
+    function drawMicroscope() {
+      const canvas = document.getElementById('microscopeCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const W = canvas.width;
+      const H = canvas.height;
+      const isPhase = currentOptics === 'phase';
+      const scale = currentMag === 100 ? 1.0 : 0.48;
+
+      ctx.clearRect(0, 0, W, H);
+
+      // Fondo de iluminación óptica (Campo Claro vs Contraste de Fases)
+      const bgGrad = ctx.createRadialGradient(W/2, H/2, 30, W/2, H/2, W/2);
+      if (isPhase) {
+        bgGrad.addColorStop(0, '#334e68');
+        bgGrad.addColorStop(1, '#102a43');
+      } else {
+        bgGrad.addColorStop(0, '#e6eadf');
+        bgGrad.addColorStop(1, '#b8c0ae');
+      }
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, W, H);
+
+      // Simulación de desenfoque con el tornillo micrométrico
+      const blurPx = Math.abs(currentFocus) * 0.7;
+      ctx.filter = blurPx > 0.2 ? `blur(${blurPx}px)` : 'none';
+
+      ctx.save();
+      ctx.translate(W / 2, H / 2);
+      ctx.scale(scale, scale);
+
+      if (currentMicroStage === 'haploid') {
+        // Células haploides esféricas (~4 um) con gemación axial y pequeños racimos
+        const clusters = [
+          { x: -95, y: -70 },
+          { x: 75, y: -55 },
+          { x: -55, y: 80 },
+          { x: 90, y: 85 },
+          { x: 0, y: -5 }
+        ];
+        clusters.forEach((c, i) => {
+          drawYeastCell(ctx, c.x, c.y, 22, 22, 0, isPhase);
+          // Yema hija 1 (axial)
+          drawYeastCell(ctx, c.x + 24, c.y - 14, 12, 12, 0, isPhase);
+          // Yema adyacente (patrón axial haploide)
+          if (i % 2 === 0) {
+            drawYeastCell(ctx, c.x + 6, c.y - 26, 9, 9, 0, isPhase);
+          }
+        });
+      } else if (currentMicroStage === 'zygote') {
+        // Cigotos bilobulados con cuello cigótico grueso (forma de maní) y shmoos
+        const zygotes = [
+          { x: -75, y: -55, ang: 0.3, bud: true },
+          { x: 65, y: 45, ang: -0.4, bud: true },
+          { x: -60, y: 85, ang: 0.15, bud: false }
+        ];
+        zygotes.forEach(z => {
+          ctx.save();
+          ctx.translate(z.x, z.y);
+          ctx.rotate(z.ang);
+
+          // Dibujar contorno bilobulado continuo de cigoto (cuello grueso)
+          ctx.beginPath();
+          ctx.moveTo(-24, -18);
+          ctx.bezierCurveTo(-48, -22, -48, 22, -24, 18);
+          ctx.bezierCurveTo(-8, 12, 8, 12, 24, 18);
+          ctx.bezierCurveTo(48, 22, 48, -22, 24, -18);
+          ctx.bezierCurveTo(8, -12, -8, -12, -24, -18);
+          ctx.closePath();
+
+          ctx.fillStyle = isPhase ? '#243b53' : '#d5dccb';
+          ctx.fill();
+          ctx.lineWidth = 2.6;
+          ctx.strokeStyle = isPhase ? '#f0f4f8' : '#3d4739';
+          ctx.stroke();
+
+          // Vacuolas en ambos lóbulos
+          ctx.beginPath();
+          ctx.arc(-22, 0, 8, 0, Math.PI * 2);
+          ctx.arc(22, 0, 8, 0, Math.PI * 2);
+          ctx.fillStyle = isPhase ? 'rgba(255,255,255,0.15)' : 'rgba(255,255,255,0.45)';
+          ctx.fill();
+
+          // Yema diploide emergiendo del cuello o extremo
+          if (z.bud) {
+            drawYeastCell(ctx, 0, -24, 13, 15, 0, isPhase);
+          }
+          ctx.restore();
+        });
+
+        // Célula "shmoo" proyectándose por feromonas
+        drawYeastCell(ctx, 75, -85, 24, 17, 0.6, isPhase);
+      } else if (currentMicroStage === 'diploid') {
+        // Células diploides elipsoidales (5x6 um) con gemación bipolar
+        const diploids = [
+          { x: -85, y: -65, ang: 0.4 },
+          { x: 75, y: -55, ang: -0.3 },
+          { x: -10, y: 10, ang: 0.2 },
+          { x: -75, y: 85, ang: -0.5 },
+          { x: 85, y: 80, ang: 0.6 }
+        ];
+        diploids.forEach((d, idx) => {
+          drawYeastCell(ctx, d.x, d.y, 32, 24, d.ang, isPhase);
+          // Yema en un polo
+          const bx = d.x + Math.cos(d.ang) * 39;
+          const by = d.y + Math.sin(d.ang) * 39;
+          drawYeastCell(ctx, bx, by, 15, 12, d.ang, isPhase);
+          // En algunas, cicatriz o brote en el polo opuesto (gemación bipolar)
+          if (idx % 2 === 0) {
+            const ox = d.x - Math.cos(d.ang) * 36;
+            const oy = d.y - Math.sin(d.ang) * 36;
+            drawYeastCell(ctx, ox, oy, 10, 8, d.ang, isPhase);
+          }
+        });
+      } else if (currentMicroStage === 'ascus') {
+        // Ascas conteniendo tétradas de 4 ascosporas haploides
+        const asci = [
+          { x: -80, y: -65, spores: 4 },
+          { x: 75, y: -60, spores: 4 },
+          { x: 0, y: 5, spores: 4 },
+          { x: -75, y: 80, spores: 3 },
+          { x: 85, y: 75, spores: 4 }
+        ];
+        asci.forEach(a => {
+          ctx.save();
+          ctx.translate(a.x, a.y);
+
+          // Saco del asca (pared delgada envolvente)
+          ctx.beginPath();
+          ctx.arc(0, 0, 34, 0, Math.PI * 2);
+          ctx.fillStyle = isPhase ? 'rgba(16, 42, 67, 0.55)' : 'rgba(180, 190, 170, 0.45)';
+          ctx.fill();
+          ctx.lineWidth = 1.8;
+          ctx.strokeStyle = isPhase ? '#bcccdc' : '#4a5546';
+          ctx.stroke();
+
+          // 4 ascosporas refringentes internas
+          const pos = a.spores === 4
+            ? [[-12, -12], [12, -12], [-12, 12], [12, 12]]
+            : [[0, -13], [-12, 10], [12, 10]];
+
+          pos.forEach(([sx, sy]) => {
+            drawYeastCell(ctx, sx, sy, 12.5, 12.5, 0, isPhase);
+          });
+
+          ctx.restore();
+        });
+      } else if (currentMicroStage === 'spores') {
+        // Esporas completamente disgregadas e individuales tras Liticasa + bolitas de vidrio
+        const freeSpores = [
+          [-110, -85], [-45, -95], [35, -80], [105, -60],
+          [-95, -15], [-20, -25], [55, -10], [115, 15],
+          [-65, 55], [10, 45], [75, 65], [-105, 95],
+          [-15, 105], [55, 110]
+        ];
+        freeSpores.forEach(([sx, sy]) => {
+          drawYeastCell(ctx, sx, sy, 12, 12, 0, isPhase);
+        });
+      }
+
+      ctx.restore();
+      ctx.filter = 'none';
+
+      // Retículo micrométrico ocular
+      ctx.strokeStyle = isPhase ? 'rgba(255,255,255,0.22)' : 'rgba(0,0,0,0.22)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(W * 0.25, H / 2);
+      ctx.lineTo(W * 0.75, H / 2);
+      for (let x = W * 0.25; x <= W * 0.75; x += 25) {
+        ctx.moveTo(x, H / 2 - 5);
+        ctx.lineTo(x, H / 2 + 5);
+      }
+      ctx.stroke();
+    }
+
+    function handleUserPhoto(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = document.getElementById('userPhotoPreview');
+        img.src = e.target.result;
+        img.style.display = 'block';
+      };
+      reader.readAsDataURL(file);
+    }
+
+    /* ==========================================
+       INTERACTIVIDAD DEL PROTOCOLO PASO A PASO
+       ========================================== */
+    function showProtocolDay(day) {
+      document.getElementById('protocol-day-1').style.display = day === 1 ? 'block' : 'none';
+      document.getElementById('protocol-day-2').style.display = day === 2 ? 'block' : 'none';
+      document.getElementById('btnDay1').classList.toggle('active', day === 1);
+      document.getElementById('btnDay2').classList.toggle('active', day === 2);
+    }
+
+    function toggleStepComplete(stepEl) {
+      stepEl.classList.toggle('completed');
+      const cb = stepEl.querySelector('input[type="checkbox"]');
+      if (cb) cb.checked = stepEl.classList.contains('completed');
+      updateProtocolProgress();
+    }
+
+    function updateProtocolProgress() {
+      const allSteps = document.querySelectorAll('.protocol-step');
+      const doneSteps = document.querySelectorAll('.protocol-step.completed');
+      const pct = Math.round((doneSteps.length / allSteps.length) * 100);
+      document.getElementById('protocolProgressBar').style.width = pct + '%';
+    }
+
+    // Inicialización al cargar la página
+    window.addEventListener('DOMContentLoaded', () => {
+      selectLifecycleStage('haploid');
+      updateMicroscopeInfo();
+      drawMicroscope();
+    });
+  </script>
+</body>
+</html>
