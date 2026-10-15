@@ -621,23 +621,6 @@
       font-size: 0.92rem;
     }
 
-    .petri-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 24px;
-      justify-content: center;
-      margin-top: 16px;
-    }
-
-    .petri-card {
-      background: rgba(15, 23, 42, 0.7);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 16px;
-      width: 280px;
-      text-align: center;
-    }
-
     table.media-table {
       width: 100%;
       border-collapse: collapse;
@@ -785,7 +768,7 @@
               <circle cx="508" cy="365" r="9" fill="#3b82f6" stroke="#bfdbfe" stroke-width="1.5"/>
               <circle cx="526" cy="365" r="9" fill="#ec4899" stroke="#fbcfe8" stroke-width="1.5"/>
               <circle cx="508" cy="383" r="9" fill="#ec4899" stroke="#fbcfe8" stroke-width="1.5"/>
-              <circle cx="526" cy="383" r="9" fill="#3b82f6" stroke="#bfdbfe" stroke-width="1.5"/>
+              <circle cx="526" cy="383" r="9" fill="#bfdbfe" stroke="#bfdbfe" stroke-width="1.5"/>
               <text x="453" y="422" fill="#5eead4" font-size="11" font-weight="bold">Asca (4 Ascosporas 1n)</text>
             </g>
 
@@ -809,7 +792,7 @@
           <div style="background: rgba(20, 184, 166, 0.08); border: 1px solid rgba(20, 184, 166, 0.35); padding: 16px; border-radius: 10px;">
             <h3>1. Análisis Masivo de Esporas (Estrategia del TP 4)</h3>
             <p style="font-size: 0.92rem; color: #e2e8f0;">
-              Se digiere la pared de millones de ascas en simultáneo con <strong>Liticasa</strong> y <strong>β-mercaptoetanol</strong>, y se separan mecánicamente las esporas con <strong>Tween 80 (0,5%) y bolitas de vidrio estériles</strong> en vórtex. Es ideal cuando se busca <strong>seleccionar varios caracteres simultáneamente</strong> (como rescatar esporas haploides recombinantes <em>LIP2⁺ LIP3⁺</em> sembrando en medio YPG) o realizar ensayos de complementación.
+              Se eliminan las células diploides vegetativas por choque térmico a <strong>50 °C (15 min)</strong> y se rompen mecánicamente millones de ascas en simultáneo mediante ciclos de <strong>vórtex y hielo con bolitas de vidrio estériles y Tween 80 (0,5%)</strong>. Es ideal para <strong>seleccionar varios caracteres simultáneamente</strong> (como rescatar esporas haploides recombinantes <em>LIP2⁺ LIP3⁺</em> sembrando en medio YPG) o realizar ensayos de complementación.
             </p>
           </div>
           <div style="background: rgba(59, 130, 246, 0.08); border: 1px solid rgba(59, 130, 246, 0.35); padding: 16px; border-radius: 10px;">
@@ -855,7 +838,7 @@
           </button>
 
           <button class="stage-selector-btn" onclick="setMicroscopeStage('spores', this)">
-            <div><span class="pill pill-warn">Día 1</span> <strong>5. Esporas Disgregadas (Libres)</strong></div>
+            <div><span class="pill pill-warn">Día 1</span> <strong>5. Esporas Disgregadas (Ruptura Mecánica)</strong></div>
             <span style="font-size: 0.78rem; color: var(--text-muted);">Archivo fijo: <code>esporas.jpg</code></span>
           </button>
 
@@ -958,7 +941,7 @@
         </div>
 
         <div class="day-switcher">
-          <button class="day-btn active" id="btnDay1" onclick="showProtocolDay(1)">📅 DÍA 1: Obtención de Diploides, Inicio de Esporulación y Purificación Masiva de Esporas</button>
+          <button class="day-btn active" id="btnDay1" onclick="showProtocolDay(1)">📅 DÍA 1: Obtención de Diploides, Inicio de Esporulación y Purificación Mecánica de Esporas</button>
           <button class="day-btn" id="btnDay2" onclick="showProtocolDay(2)">📅 DÍA 2: Observación de Cigotos, Inducción en YPAc/KAc y Análisis de Recombinantes</button>
         </div>
 
@@ -1018,60 +1001,78 @@
             </p>
           </div>
 
-          <h3 style="margin: 22px 0 10px; color: #2dd4bf;">3) Purificación y plaqueo masivo de esporas (Cultivo esporulado de la semana anterior)</h3>
+          <h3 style="margin: 22px 0 10px; color: #2dd4bf;">3) Purificación y plaqueo de esporas (Ruptura mecánica sin liticasa)</h3>
 
           <div class="protocol-step" onclick="toggleStepComplete(this)">
             <div class="step-header">
-              <div class="step-title"><input type="checkbox" /> D. Lavado de 1 ml de cultivo esporulado y resuspensión en Buffer Tris-EDTA</div>
+              <div class="step-title"><input type="checkbox" /> D. Cosecha y lavado del cultivo esporulado</div>
               <div class="step-badges">
-                <span class="badge-tech">2 lavados H₂Od estéril</span>
-                <span class="badge-tech">200 µl Tris-HCl pH 8 (50 mM), EDTA 10 mM</span>
+                <span class="badge-tech">1 ml cultivo esporulado</span>
+                <span class="badge-tech">Centrifugar 1 min a máx. velocidad</span>
+                <span class="badge-tech">2 lavados con H₂Od estéril</span>
               </div>
             </div>
             <p style="font-size: 0.9rem; margin-top: 8px; color: #cbd5e1;">
-              Tomar <strong>1 ml</strong> del cultivo esporulado provisto, lavar dos veces con agua destilada estéril y resuspender el pellet en <strong>200 µl de buffer Tris-HCl pH 8 50 mM, EDTA 10 mM</strong>.
+              Tomar <strong>1 ml</strong> de los cultivos esporulados preparados por la comisión de la semana anterior, centrifugar <strong>1 min a máxima velocidad</strong>, descartar el sobrenadante y lavar <strong>dos veces con H₂Od estéril</strong> (realizando la misma centrifugación de 1 min a máxima velocidad en cada lavado).
             </p>
           </div>
 
           <div class="protocol-step" onclick="toggleStepComplete(this)">
             <div class="step-header">
-              <div class="step-title"><input type="checkbox" /> E. Digestión de la pared del asca con Liticasa y β-mercaptoetanol</div>
+              <div class="step-title"><input type="checkbox" /> E. Resuspensión en agua estéril y agregado de Tween 80</div>
               <div class="step-badges">
-                <span class="badge-tech">100 µl Liticasa (5 mg/ml en sorbitol 1M, EDTA 0,1M pH 8)</span>
-                <span class="badge-tech">10 µl β-ME 1 M</span>
-                <span class="badge-tech">37 °C • 40 min</span>
-              </div>
-            </div>
-            <p style="font-size: 0.9rem; margin-top: 8px; color: #cbd5e1;">
-              Agregar <strong>100 µl de solución stock de Liticasa</strong> y <strong>10 µl de β-mercaptoetanol 1 M</strong>. Incubar a <strong>37 °C durante 40 minutos</strong> para degradar la pared del saco del asca.
-            </p>
-          </div>
-
-          <div class="protocol-step" onclick="toggleStepComplete(this)">
-            <div class="step-header">
-              <div class="step-title"><input type="checkbox" /> F. Tratamiento con Tween 80 (0,5%) y agitación con bolitas de vidrio estériles</div>
-              <div class="step-badges">
+                <span class="badge-tech">100 µl H₂Od estéril</span>
                 <span class="badge-tech">30 µl Tween 80 0,5%</span>
-                <span class="badge-tech">200 µl bolitas de vidrio</span>
-                <span class="badge-tech">≥10× (Vórtex 1 min / Hielo 1 min)</span>
               </div>
             </div>
             <p style="font-size: 0.9rem; margin-top: 8px; color: #cbd5e1;">
-              Agregar <strong>30 µl de Tween 80 0,5% (v/v)</strong>, incubar 15 min en hielo y realizar 2 ciclos de vórtex (1 min) / hielo (30 s). Centrifugar 3 min a 10.000 rpm, resuspender en <strong>270 µl H₂Od + 30 µl Tween 80 0,5%</strong> y pasar al tubo con <strong>200 µl de bolitas de vidrio estériles</strong>. Alternar vórtex (1 min) e incubación en hielo (1 min) al menos 10 veces, monitoreando <strong>3 µl al microscopio</strong> hasta ver esporas libres.
+              Resuspender el pellet celular en <strong>100 µl de H₂Od estéril</strong> y agregar <strong>30 µl de Tween 80 0,5%</strong>.
+            </p>
+            <div class="why-box">
+              <strong>Función del Tween 80:</strong> Actúa como tensioactivo no iónico que evita la agregación hidrofóbica de las esporas entre sí y su adherencia a las paredes del tubo.
+            </div>
+          </div>
+
+          <div class="protocol-step" onclick="toggleStepComplete(this)">
+            <div class="step-header">
+              <div class="step-title"><input type="checkbox" /> F. Tratamiento térmico a 50 °C e incubación en hielo</div>
+              <div class="step-badges">
+                <span class="badge-tech">50 °C • 15 min (baño o termobloque)</span>
+                <span class="badge-tech">Hielo • 15 min</span>
+              </div>
+            </div>
+            <p style="font-size: 0.9rem; margin-top: 8px; color: #cbd5e1;">
+              Incubar <strong>15 minutos a 50 °C</strong> (en baño termostatizado o termobloque) y luego incubar en <strong>hielo por 15 minutos</strong>.
+            </p>
+            <div class="why-box">
+              <strong>Fundamento del choque térmico a 50 °C:</strong> Elimina selectivamente las células vegetativas diploides que no hayan esporulado, mientras que las ascosporas haploides sobreviven gracias a su pared esporal termorresistente.
+            </div>
+          </div>
+
+          <div class="protocol-step" onclick="toggleStepComplete(this)">
+            <div class="step-header">
+              <div class="step-title"><input type="checkbox" /> G. Ruptura mecánica con bolitas de vidrio estériles (Vórtex / Hielo)</div>
+              <div class="step-badges">
+                <span class="badge-tech">Bolitas de vidrio estériles</span>
+                <span class="badge-tech">10–15× (Vórtex 1 min / Hielo 1 min)</span>
+              </div>
+            </div>
+            <p style="font-size: 0.9rem; margin-top: 8px; color: #cbd5e1;">
+              En presencia de las bolitas de vidrio estériles, <strong>vortexear por 1 min e incubar en hielo por 1 min</strong>. Repetir de <strong>10 a 15 veces</strong> o hasta que al monitorear la suspensión al microscopio no se vean células intactas y las esporas se observen disgregadas.
             </p>
           </div>
 
           <div class="protocol-step" onclick="toggleStepComplete(this)">
             <div class="step-header">
-              <div class="step-title"><input type="checkbox" /> G. Lavado de bolitas, baño a 50 °C (si quedan células) y siembra en YPDA e YPG</div>
+              <div class="step-title"><input type="checkbox" /> H. Recuperación del sobrenadante y siembra en YPDA e YPG</div>
               <div class="step-badges">
-                <span class="badge-tech">2 lavados × 400 µl H₂Od (Vf ~1 ml)</span>
-                <span class="badge-tech">50 °C • 10 min</span>
-                <span class="badge-tech">Siembra 50–100 µl</span>
+                <span class="badge-tech">+ 500 µl H₂Od estéril</span>
+                <span class="badge-tech">50 µl en YPDA</span>
+                <span class="badge-tech">50 µl en YPG</span>
               </div>
             </div>
             <p style="font-size: 0.9rem; margin-top: 8px; color: #cbd5e1;">
-              Dejar decantar las bolitas, recuperar el sobrenadante y lavar las bolitas dos veces con <strong>400 µl de H₂Od estéril</strong> juntando todo (Vf ~1 mL). Si al observar al microscopio aún se ven células vegetativas diploides, incubar <strong>10 minutos a 50 °C</strong> para eliminarlas (las ascosporas resisten el choque térmico). Sembrar <strong>50–100 µl en YPDA</strong> (control de viabilidad) y <strong>50–100 µl en YPG</strong> (selección de esporas recombinantes <em>LIP2⁺ LIP3⁺</em>).
+              Dejar decantar las bolitas de vidrio y agregar <strong>500 µl de H₂Od estéril</strong> para recuperar las esporas. Tomar <strong>50 µl del sobrenadante y sembrar en YPDA</strong> para chequear la viabilidad total, y <strong>50 µl en placas de medio YPG</strong> para seleccionar las esporas haploides recombinantes que llevan los genes <em>LIP2</em> y <em>LIP3</em> salvajes.
             </p>
           </div>
         </div>
@@ -1195,8 +1196,6 @@
   <script>
     /* =========================================================================
        CONFIGURACIÓN DE FOTOS FIJAS DEL REPOSITORIO
-       Coloca tus 5 imágenes en la misma carpeta que index.html con estos nombres
-       (o edita aquí el nombre si usas .png / .jpeg):
        ========================================================================= */
     const FOTOS_CATEDRA = {
       haploid: {
@@ -1225,9 +1224,9 @@
       },
       spores: {
         archivo: 'esporas.jpg',
-        titulo: '5. Esporas Disgregadas Libres (Post-Liticasa y Vórtex con Bolitas)',
+        titulo: '5. Esporas Disgregadas Libres (Post-Choque Térmico a 50 °C y Ruptura Mecánica)',
         dimensiones: 'Ascosporas haploides individuales (~2,5–3 µm)',
-        descripcion: 'Monitoreo de 3 µl al microscopio: luego de digerir el asca con Liticasa + β-mercaptoetanol y agitar con Tween 80 y bolitas de vidrio, se observan esporas libres sin ascas.'
+        descripcion: 'Luego de incubar 15 min a 50 °C con Tween 80 (0,5%) y realizar 10–15 ciclos de vórtex (1 min) y hielo (1 min) con bolitas de vidrio estériles, se observan las esporas libres sin células intactas.'
       }
     };
 
@@ -1314,14 +1313,14 @@
         `
       },
       germination: {
-        badge: 'Purificación Masiva y Selección',
+        badge: 'Ruptura Mecánica y Selección',
         title: 'Esporas Libres y Selección de Recombinantes en YPG',
         html: `
           <p style="margin-bottom: 10px;">
-            En el Día 1 se digiere la pared del asca con <strong>Liticasa y β-mercaptoetanol</strong>, se disgregan las esporas con <strong>Tween 80 y bolitas de vidrio en vórtex</strong> (monitoreando 3 µl al microscopio) y se eliminan las células vegetativas remanentes a <strong>50 °C por 10 min</strong>.
+            En el Día 1 se lava 1 ml del cultivo esporulado, se resuspende en <strong>100 µl de H₂Od estéril + 30 µl de Tween 80 0,5%</strong>, se incuba <strong>15 min a 50 °C</strong> (para eliminar células vegetativas diploides) y <strong>15 min en hielo</strong>, y se rompe mecánicamente con <strong>bolitas de vidrio estériles</strong> mediante <strong>10–15 ciclos de vórtex (1 min) y hielo (1 min)</strong> hasta no ver células intactas.
           </p>
           <ul style="margin-left: 18px; font-size: 0.9rem; color: #cbd5e1;">
-            <li>Al sembrar 50–100 µl en <strong>YPG</strong>, solo crecen las esporas haploides recombinantes que heredaron simultáneamente <em>LIP2⁺</em> y <em>LIP3⁺</em> salvajes.</li>
+            <li>Tras decantar las bolitas y recuperar con <strong>500 µl de H₂Od estéril</strong>, se siembran <strong>50 µl en YPDA</strong> (viabilidad) y <strong>50 µl en YPG</strong> (donde solo crecen las esporas haploides recombinantes <em>LIP2⁺ LIP3⁺</em>).</li>
           </ul>
         `
       }
